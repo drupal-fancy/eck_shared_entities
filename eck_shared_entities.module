@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function eck_shared_entities_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner == 'eck' && $plugin_type == 'property_behavior') {
+    return 'plugins/eck/' . $plugin_type;
+  }
+  if ($owner == 'entityreference' && $plugin_type == 'selection') {
+    return 'plugins/entityreference/' . $plugin_type;
+  }
+}
+
+/**
+ * Implements hook_eck_default_properties().
+ */
+function eck_shared_entities_eck_default_properties() {
+  $default_properties = array();
+
+  $default_properties['shared'] = array(
+    'label' => 'Shared Entity',
+    'type' => 'integer',
+    'behavior' => 'shared_entity',
+  );
+
+  $default_properties['shared_title'] = array(
+    'label' => 'Shared Entity Title',
+    'type' => 'text',
+    'behavior' => 'shared_entity_title',
+  );
+
+  return $default_properties;
+}

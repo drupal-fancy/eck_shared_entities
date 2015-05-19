@@ -1,0 +1,5 @@
+name = ECK shared entities
+description = Provides a property for eck entities to mark them as reusable in entity reference selections.
+core = 7.x
+dependencies[] = eck
+dependencies[] = inline_entity_form

@@ -14,7 +14,8 @@ function eck_shared_entities_shared_entity_property_widget($property, $vars) {
     '#default_value' => $entity->{$property},
     '#description' => t('Share this @label entity to make it available for reuse.', array('@label' => $entity->type)),
     '#attributes' => array('data-shared-entity-flag-' . $entity->entityType() => $id),
-    '#weight' => 90
+    '#weight' => 90,
+    '#disabled' => !(user_access('edit share flag for all entities') || user_access('edit share flag for ' . $entity->entityType() . ' ' . $entity->type . ' entities'))
   );
 
   return $shared_entity_widget;

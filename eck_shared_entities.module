@@ -13,6 +13,32 @@ function eck_shared_entities_ctools_plugin_directory($owner, $plugin_type) {
 }
 
 /**
+ * Implements hook_permission().
+ */
+function eck_shared_entities_permission() {
+  $permissions = array(
+    'edit share flag for all entities' => array(
+      'title' => t('Can edit share flag for all entities'),
+      'description' => t('Allow the user to mark entities of all types as shared.'),
+    ),
+  );
+
+  foreach (EntityType::loadAll() as $entity_type) {
+    if (isset($entity_type->properties['shared'])) {
+      foreach (Bundle::loadByEntityType($entity_type) as $bundle) {
+        $permissions += array(
+          'edit share flag for ' . $entity_type->name . ' ' . $bundle->name . ' entities' => array(
+            'title' => t('Can edit share flag for ' . $bundle->label . ' entities'),
+            'description' => t('Allow the user to mark ' . $bundle->label . ' (' . $entity_type->label . ') entities as shared.'),
+          ),
+        );
+      }
+    }
+  }
+  return $permissions;
+}
+
+/**
  * Implements hook_eck_default_properties().
  */
 function eck_shared_entities_eck_default_properties() {

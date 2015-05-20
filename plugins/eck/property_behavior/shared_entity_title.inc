@@ -15,6 +15,7 @@ function eck_shared_entities_shared_entity_title_property_widget($property, $var
     '#description' => t('Enter a descriptive title for this entity so that other users can find it.'),
     '#weight' => 91,
     '#hidden' => TRUE,
+    '#disabled' => !(user_access('edit share flag for all entities') || user_access('edit share flag for ' . $entity->entityType() . ' ' . $entity->type . ' entities')),
     '#states' => array(
       'visible' => array(
         '[data-shared-entity-flag-' . $entity->entityType() . '="' . $id . '"]:input' => array('checked' => TRUE),

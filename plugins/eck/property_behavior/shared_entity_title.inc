@@ -6,6 +6,7 @@ $plugin = array(
 
 function eck_shared_entities_shared_entity_title_property_widget($property, $vars) {
   $entity = $vars['entity'];
+  list($id) = entity_extract_ids($entity->entityType(), $entity);
 
   $shared_entity_title_widget = array(
     '#type' => 'textfield',
@@ -16,7 +17,7 @@ function eck_shared_entities_shared_entity_title_property_widget($property, $var
     '#hidden' => TRUE,
     '#states' => array(
       'visible' => array(
-        ':input[name="shared"]' => array('checked' => TRUE),
+        '[data-shared-entity-flag-' . $entity->entityType() . '="' . $id . '"]:input' => array('checked' => TRUE),
       )
     )
   );

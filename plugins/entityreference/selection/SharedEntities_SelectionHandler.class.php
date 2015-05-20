@@ -19,8 +19,12 @@ class SharedEntities_SelectionHandler extends EntityReference_SelectionHandler_G
     $query->propertyCondition('shared', '1');
 
     if (isset($match)) {
-      $query->propertyCondition('shared_title', $match, $match_operator);
+      $query->addMetaData('match', $match);
+      $query->addMetaData('match_operator', $match_operator);
 
+      $query->addTag('shared_entities');
+
+      // Remove the title condition since we add it via our alter hook.
       foreach ($query->propertyConditions as $index => $condition) {
         if ($condition['column'] == 'title') {
           unset($query->propertyConditions[$index]);

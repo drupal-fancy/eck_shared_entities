@@ -32,3 +32,30 @@ function eck_shared_entities_eck_default_properties() {
 
   return $default_properties;
 }
+
+/**
+ * Implements hook_query_TAG_alter().
+ */
+function eck_shared_entities_query_shared_entities_alter(QueryAlterableInterface $query) {
+
+  $or_properties = array('title', 'shared_title');
+  $filter_condition = db_or();
+  $match = $query->getMetaData('match');
+  $match_operator = $query->getMetaData('match_operator');
+  $entity_type = $query->getMetaData('entityreference_selection_handler')->entity_type;
+  $entity_info = entity_get_info($entity_type);
+
+  $condition_value = $match;
+  $condition_operator = '=';
+
+  if ($match_operator == 'CONTAINS') {
+    $condition_value = '%' . $match . '%';
+    $condition_operator = 'LIKE';
+  }
+
+  foreach ($or_properties as $or_property) {
+    $filter_condition->condition($entity_info['base_table'] . $or_property, $condition_value, $condition_operator);
+  }
+
+  $query->condition($filter_condition);
+}
